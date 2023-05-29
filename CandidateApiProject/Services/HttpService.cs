@@ -136,24 +136,33 @@ namespace CandidateApiProject.Services
         {
             // Payzee Authentication servisine istek yapılır ve token alınır
 
-            var loginRequest = new LoginRequest()
+            try
             {
-                ApiKey = _config.Password,
-                Email = _config.Email,
-                Lang = _config.Lang
-            };
+                var loginRequest = new LoginRequest()
+                {
+                    ApiKey = _config.Password,
+                    Email = _config.Email,
+                    Lang = _config.Lang
+                };
 
-            var response = await Post<ApiResponse<LoginResponse>>(_config.TokenUrl, loginRequest);
+                var response = await Post<ApiResponse<LoginResponse>>(_config.TokenUrl, loginRequest);
 
 
-            if (response.StatusCode == 200 && response.Result.Token != null)
-            {
-                return response.Result.Token;
+                if (response.StatusCode == 200 && response.Result.Token != null)
+                {
+                    return response.Result.Token;
+                }
+                else
+                {
+                    throw new Exception("Payzee token alınamadı.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                throw new Exception("Payzee token alınamadı.");
+
             }
+
+            return "";
         }
     }
 }

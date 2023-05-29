@@ -29,7 +29,7 @@ namespace CandidateApiProject.Services
             {
 
                 if (!string.IsNullOrEmpty(request.IdentityNo) && request.IdentityNo.Length != 11)
-                    throw new Exception("TC kimlik no uzunluğu 11 haneli olmalıdır!");
+                    throw new ApiException(GenericEnums.BusinessErrorCode, "TC kimlik no uzunluğu 11 haneli olmalıdır!");
 
                 customer = new Customer();
                 customer = _serviceSession.Alls<Customer>().Where(x => x.IdentityNo.Equals(request.IdentityNo)).FirstOrDefault();
